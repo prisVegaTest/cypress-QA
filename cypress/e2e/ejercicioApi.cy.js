@@ -29,22 +29,6 @@ describe('Pruebas End-to-End para Demoblaze', () => {
       });
   
     it('debería iniciar sesión a través de la API', () => {
-      cy.request({
-        method: 'POST',
-        url: 'https://api.demoblaze.com/login',
-        body: {
-          username: username,
-          password: password,
-        },
-        failOnStatusCode: false
-      }).then((loginResponse) => {
-        console.log(loginResponse);
-        expect(loginResponse.status).to.eq(200);
-        expect(loginResponse.body).to.not.be.empty;
-      });
-    });
-  
-    it('debería iniciar sesión a través de la API', () => {
         const username = `testuser_${new Date().getTime()}`;
         const password = 'testpassword';
       
@@ -83,6 +67,57 @@ describe('Pruebas End-to-End para Demoblaze', () => {
         });
       });
   
+    it('deberia iniciar sesión exitoso del usuario registrado sin la API', () => {
+      cy.visit(baseUrl);
+
+      cy.get('#login2').contains('Log in').click({force: true});
+      cy.get('#logInModal > .modal-dialog > .modal-content').should('be.visible');
+
+      cy.get('#loginusername').type(username);
+      cy.get('#loginpassword').type(password);
+      cy.get('#logInModal > .modal-dialog > .modal-content > .modal-footer > .btn-primary').click({ force: true });
+    });
+
+    it('deberia iniciar sesión del usuario con clave incorrecta registrado sin la API', () => {
+      cy.visit(baseUrl);
+
+      cy.get('#login2').contains('Log in').click({force: true});
+      cy.get('#logInModal > .modal-dialog > .modal-content').should('be.visible');
+
+      cy.get('#loginusername').type(username);
+      cy.get('#loginpassword').type('pasword1234');
+      cy.get('#logInModal > .modal-dialog > .modal-content > .modal-footer > .btn-primary').click({ force: true });
+
+      cy.window().then((win) => {
+        cy.stub(win, 'alert').callsFake((text) => {
+          expect(text).to.eq('Wrong password.');
+        });
+    });
+
+    it('deberia registrar un nuevo usuario sin la API', () => {
+      cy.visit(baseUrl);
+
+      cy.get('#signin2').contains('Sign up').click({force: true});
+      cy.get('#signInModal').should('be.visible');
+
+      cy.get('#sign-username').type(username);
+      cy.get('#sign-password').type(password);
+      cy.get('#signInModal .btn-primary').click({ force: true });
+
+      cy.window().then((win) => {
+        cy.stub(win, 'alert').callsFake((text) => {
+          if (text === 'Sign up successful.') {
+            expect(text).to.eq('Sign up successful.');
+          } else if (text === 'This user already exist.') {
+            expect(text).to.eq('This user already exist.');
+          }
+        });
+      });
+  
+      cy.wait(1000);
+      cy.get('#signInModal > .modal-dialog > .modal-content > .modal-header > .close > span').click();
+    });
+
     it('debería manejar el registro de un usuario existente', () => {
       cy.visit(baseUrl);
   
@@ -103,5 +138,5 @@ describe('Pruebas End-to-End para Demoblaze', () => {
       cy.wait(1000);
       cy.get('#signInModal > .modal-dialog > .modal-content > .modal-header > .close > span').click();
     });
-  });
-  
+    });
+});

@@ -1,0 +1,9 @@
+Conclusiones
+EJERCICIO 1
+El ejercicio 1 fue un flujo sencillo debido a que tenía sus IDs claros de indentificar así como sus demás componentes, por lo que fue un ejercicio sencillo.
+Aprender un flujo es importante antes de automatizarlo, debido a que se debe determinar si es necesario o no hacerlo automatizado.
+EJERCICIO 2
+El ejercicio de Apis fue un poco más complicado debido a que tocó manejar selectores dinámicos y no tan fáciles de seleccionar como las alertas, sin embargo con esfuerzo se pudo solventar el inconveniente.
+El manejo de componentes padre suele complicar seleccionar ciertos elementos que están bajo su estructura.
+Aprender a manejar eventos durante la ejecución de flujo es bastante importante para obtener un prueba confiable.
+En el día a día se van a encontrar varios elementos que son muy complicados de seleccionar, por lo que es necesario determinar las estrategias para solventar los diferentes escenarios que se presenten. 
